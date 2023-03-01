@@ -34,7 +34,7 @@ function URL_FORM_HANDLER(req, res) {
     } else {
       shorturlIndex += 1;
       shorturlIndexes.push({ 
-        "original": req.body.url,
+        "original_url": req.body.url,
         "short_url": shorturlIndex
       });
       res.json(shorturlIndexes[shorturlIndexes.length - 1]);
@@ -46,7 +46,7 @@ app.post('/api/shorturl', URL_FORM_HANDLER);
 
 app.get('/api/shorturl/:shorturl', function (req, res) {
   let shorturl_Requested = parseInt(req.params.shorturl);
-  res.redirect(shorturlIndexes[shorturl_Requested - 1].original);
+  res.redirect(shorturlIndexes[shorturl_Requested - 1].original_url);
 });
 
 app.listen(port, function() {
