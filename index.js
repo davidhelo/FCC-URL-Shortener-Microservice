@@ -28,9 +28,10 @@ app.get('/api/hello', function(req, res) {
 app.use('/api/shorturl', bodyParser.urlencoded({extended: false}));
 
 function URL_FORM_HANDLER(req, res) {
-  console.log(req.body.url.replace(/^http[s]?:\/\/(www.)?/ig, ''));
-  dns.lookup(req.body.url.replace(/^http[s]?:\/\/(www.)?/ig, ''), (error, addresses, family) => {
-    if (error != null) {
+  let regExp = /^http[s]?:\/\/(www.)?/i;
+  
+  console.log(regExp.test(req.body.url));
+    if (!regExp.test(req.body.url)) {
       res.json({ error: 'invalid url' });
     } else {
       shorturlIndex += 1;
@@ -40,7 +41,6 @@ function URL_FORM_HANDLER(req, res) {
       });
       res.json(shorturlIndexes[shorturlIndexes.length - 1]);
     }
-  });
 }
 
 app.post('/api/shorturl', URL_FORM_HANDLER);
