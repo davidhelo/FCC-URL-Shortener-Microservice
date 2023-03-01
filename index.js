@@ -28,13 +28,14 @@ app.get('/api/hello', function(req, res) {
 app.use('/api/shorturl', bodyParser.urlencoded({extended: false}));
 
 function URL_FORM_HANDLER(req, res) {
-  dns.lookup(req.body.url.replace(/^http[s]?:\/\/www./ig, ''), (error, addresses, family) => {
+  console.log(req.body.url.replace(/^http[s]?:\/\/(www.)?/ig, ''));
+  dns.lookup(req.body.url.replace(/^http[s]?:\/\/(www.)?/ig, ''), (error, addresses, family) => {
     if (error != null) {
       res.json({ error: 'invalid url' });
     } else {
       shorturlIndex += 1;
       shorturlIndexes.push({ 
-        "original_url": req.body.url,
+        "original_url": req.body.url.replace(/www./ig, ''),
         "short_url": shorturlIndex
       });
       res.json(shorturlIndexes[shorturlIndexes.length - 1]);
